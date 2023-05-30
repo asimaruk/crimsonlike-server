@@ -1,25 +1,23 @@
 {
-  "name": "crimsonlike-server",
+  "name": "server-impl",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
-    "build": "tsc -b",
-    "start": "node dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/server-impl": "file:modules/server/di",
+    "@types/api": "file:../api",
     "@types/express": "^4.17.17",
     "typescript": "^5.0.4",
     "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "server-impl": "file:modules/server/impl"
+    "express": "^4.18.2"
   }
 }

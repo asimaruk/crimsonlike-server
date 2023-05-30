@@ -1,17 +1,9 @@
-import express, { Request, Response } from 'express';
+import { createApi } from 'server-impl';
 
-const app = express();
-const port = 3000;
+const api = createApi();
 
 function main() {
-    app.get('/', (req: Request, res: Response) => {
-        res.send('Hello, world!');
-    });
-    
-    // Запуск сервера на порту 3000
-    app.listen(port, () => {
-        console.log(`Server started at port ${port}`);
-    });
+    api.start();
 }
 
 main();
