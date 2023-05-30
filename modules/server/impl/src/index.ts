@@ -1,6 +1,8 @@
 import { Api } from "api";
-import { DummyExpressServer } from "./DummyExpressServer";
+import { ExpressServer } from "./ExpressServer";
+import { createRecordsRepository } from "repository-records-impl";
 
 export function createApi(): Api {
-    return new DummyExpressServer();
+    // return new DummyExpressServer();
+    return new ExpressServer(createRecordsRepository());
 }

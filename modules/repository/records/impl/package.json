@@ -1,0 +1,16 @@
+{
+  "name": "repository-records-impl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/entity-api": "file:../../../entity/api",
+    "@types/repository-records-api": "file:../api"
+  }
+}

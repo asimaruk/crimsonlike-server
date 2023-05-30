@@ -1,0 +1,13 @@
+{
+  "name": "@types/repository-records-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "types": "index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/entity-api": "file:../../../entity/api"
+  }
+}
