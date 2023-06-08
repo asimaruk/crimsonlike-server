@@ -1,6 +1,7 @@
 import { RepositoryRecords } from "repository-records-api";
-import { DummyRecordsRepository } from "./DummyRecordsRepository";
+import { DefaultRecordsRepository } from "./RecordsRepository";
+import { createDb } from 'db-impl';
 
 export function createRecordsRepository(): RepositoryRecords {
-    return new DummyRecordsRepository();
+    return new DefaultRecordsRepository(createDb());
 }

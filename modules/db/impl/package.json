@@ -1,0 +1,16 @@
+{
+  "name": "db-impl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/srs/main.js",
+  "types": "dist/src/main.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/db-api": "file:../api"
+  }
+}

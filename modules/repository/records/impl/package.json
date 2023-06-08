@@ -10,7 +10,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/db-api": "file:../../../db/api",
     "@types/entity-api": "file:../../../entity/api",
     "@types/repository-records-api": "file:../api"
+  },
+  "dependencies": {
+    "db-impl": "file:../../../db/impl"
   }
 }
