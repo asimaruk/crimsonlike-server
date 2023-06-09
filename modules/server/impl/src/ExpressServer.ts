@@ -30,7 +30,11 @@ export class ExpressServer implements Api {
     }
 
     async newRecord(record: Api.Record): Promise<Api.NewRecord> {
-        const newRecordEntity = await this.repository.newRecord(record);
+        const newRecordEntity = await this.repository.newRecord({
+            name: record.name,
+            score: record.score,
+            uid: record.uid
+        });
         return { 
             uid: newRecordEntity.uid,
             name: newRecordEntity.name,

@@ -6,8 +6,8 @@ export interface Api {
 
 declare namespace Api {
     export type Record = {
-        uid: String,
-        name: String,
+        uid: string,
+        name: string,
         score: number
     };
 

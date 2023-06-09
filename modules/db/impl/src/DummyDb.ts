@@ -2,37 +2,55 @@ import { Db } from "db-api";
 
 export class DummyDb implements Db {
 
-    private data: Db.Record[] = []
+    private users: Db.User[] = [];
+    private records: Db.Record[] = [];
 
     constructor() {
-        this.data = [
-            { uid: '3', name: 'RepositoryJack', score: 300 },
-            { uid: '2', name: 'RepositoryJane', score: 200 },
-            { uid: '1', name: 'RepositoryJohn', score: 100 },
+        this.users = [
+            { fingerprint: 'fingerprint_1', uid: '3', name: 'Jack' },
+            { fingerprint: 'fingerprint_2', uid: '2', name: 'Jane' },
+            { fingerprint: 'fingerprint_3', uid: '1', name: 'John' },
+        ];
+        this.records = [
+            { userId: '3', score: 300 },
+            { userId: '2', score: 200 },
+            { userId: '1', score: 100 },
         ];
     }
 
+    createUser(fingerprint: String, name: String): Promise<Db.User> {
+        throw new Error("Method not implemented.");
+    }
+
+    getUser(userId: String): Promise<Db.User | null> {
+        return Promise.resolve(this.users.find((u) => u.uid == userId) ?? null);
+    }
+
+    getUserByFingerprint(fingerprint: String): Promise<Db.User | null> {
+        return Promise.resolve(this.users.find((u) => u.fingerprint == fingerprint) ?? null);
+    }
+
     getRecords(count: number): Promise<Db.Record[]> {
-        return new Promise((resolve, reject) => resolve(this.data));
+        return new Promise((resolve, reject) => resolve(this.records));
     }
 
     insertRecord(record: Db.Record): Promise<void> {
-        const index = this.data.findIndex((r) => record.uid = r.uid);
+        const index = this.records.findIndex((r) => record.userId == r.userId);
         if (index != -1) {
-            this.data.splice(index, 1);
+            this.records.splice(index, 1);
         } else {
-            const insertIndex = this.data.findIndex((r) => r.score < record.score);
+            const insertIndex = this.records.findIndex((r) => r.score < record.score);
             if (insertIndex == -1) {
-                this.data.push(record)
+                this.records.push(record)
             } else {
-                this.data.splice(insertIndex, 0, record);
+                this.records.splice(insertIndex, 0, record);
             }
         }
         return Promise.resolve();
     }
 
-    getRecordPosition(record: Db.Record): Promise<number> {
-        return Promise.resolve(this.data.findIndex((r) => record.uid = r.uid));
+    getRecordPosition(userId: string): Promise<number> {
+        return Promise.resolve(this.records.findIndex((r) => userId == r.userId));
     }
     
 }

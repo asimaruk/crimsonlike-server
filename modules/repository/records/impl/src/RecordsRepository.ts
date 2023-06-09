@@ -10,13 +10,28 @@ export class DefaultRecordsRepository implements RepositoryRecords {
 
     }
 
-    allRecords(): Promise<Entity.Record[]> {
-        return this.db.getRecords(DefaultRecordsRepository.DEFAULT_RECORDS_COUNT);
+    async allRecords(): Promise<Entity.Record[]> {
+        const records = await this.db.getRecords(DefaultRecordsRepository.DEFAULT_RECORDS_COUNT);
+        const users = await Promise.all(records.map(async (r) => {
+            return this.db.getUser(r.userId);
+        }));
+        return records.map((r) => {
+            const user = users.find((u) => u?.uid == r.userId);
+            return {
+                uid: user?.uid ?? "",
+                name: user?.name ?? "unknown",
+                score: r.score,
+            };
+        });
     }
 
     async newRecord(record: Entity.Record): Promise<Entity.NewRecord> {
-        await this.db.insertRecord(record);
-        const position = await this.db.getRecordPosition(record);
+        await this.db.insertRecord({
+            userId: record.uid,
+            score: record.score
+
+        });
+        const position = await this.db.getRecordPosition(record.uid);
         return {
             ...record,
             position

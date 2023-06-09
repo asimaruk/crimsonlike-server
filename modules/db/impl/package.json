@@ -11,6 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/db-api": "file:../api"
+    "@types/db-api": "file:../api",
+    "@types/mongodb": "^4.0.7"
+  },
+  "dependencies": {
+    "mongodb": "^5.6.0"
   }
 }
