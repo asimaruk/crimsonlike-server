@@ -69,7 +69,7 @@ export class MongoDatabase implements Data {
         const records = await this.collections.records
             ?.find()
             .sort({ score: -1 })
-            .limit(10)
+            .limit(count)
             .map(convertMongoRecord)
             .toArray();
         return records ?? [];
