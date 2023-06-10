@@ -1,6 +1,8 @@
-import { Db } from "db-api";
-import { DummyDb } from "./DummyDb";
+import { Data } from "db-api";
+import { MongoDatabase } from "./MongoDatabase";
 
-export function createDb(): Db {
-    return new DummyDb();
+export function createDb(): Data {
+    const db = new MongoDatabase();
+    db.setup();
+    return db;
 }

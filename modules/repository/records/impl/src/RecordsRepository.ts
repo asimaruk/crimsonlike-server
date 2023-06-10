@@ -1,4 +1,4 @@
-import { Db } from "db-api";
+import { Data } from "db-api";
 import { Entity } from "entity-api";
 import { RepositoryRecords } from "repository-records-api";
 
@@ -6,7 +6,7 @@ export class DefaultRecordsRepository implements RepositoryRecords {
 
     static DEFAULT_RECORDS_COUNT = 10;
 
-    constructor(private db: Db) {
+    constructor(private db: Data) {
 
     }
 

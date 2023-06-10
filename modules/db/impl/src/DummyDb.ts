@@ -1,40 +1,50 @@
-import { Db } from "db-api";
+import { Data } from "db-api";
 
-export class DummyDb implements Db {
+export class DummyDb implements Data {
 
-    private users: Db.User[] = [];
-    private records: Db.Record[] = [];
+    private users: Data.User[] = [];
+    private records: Data.Record[] = [];
+    private lastUid: number = 0;
+    private names: string[] = ['John', 'Jane', 'Jack'];
 
-    constructor() {
-        this.users = [
-            { fingerprint: 'fingerprint_1', uid: '3', name: 'Jack' },
-            { fingerprint: 'fingerprint_2', uid: '2', name: 'Jane' },
-            { fingerprint: 'fingerprint_3', uid: '1', name: 'John' },
-        ];
-        this.records = [
-            { userId: '3', score: 300 },
-            { userId: '2', score: 200 },
-            { userId: '1', score: 100 },
-        ];
+    setup(): Promise<void> {
+        for (; this.lastUid < 3; this.lastUid++) {
+            this.users.push({
+                fingerprint: `fingerprint_${this.lastUid}`, 
+                uid: `${this.lastUid}`, 
+                name: this.names[this.lastUid % this.names.length],
+            });
+            this.records.push({ 
+                userId: `${this.lastUid}`, 
+                score: 100 * (this.lastUid + 1),
+            });
+        }
+        return Promise.resolve();
     }
 
-    createUser(fingerprint: String, name: String): Promise<Db.User> {
-        throw new Error("Method not implemented.");
+    createUser(fingerprint: string, name: string): Promise<Data.User> {
+        const user: Data.User = {
+            uid: `${this.lastUid++}`,
+            fingerprint: fingerprint,
+            name: name
+        };
+        this.users.push(user);
+        return Promise.resolve(user);
     }
 
-    getUser(userId: String): Promise<Db.User | null> {
+    getUser(userId: String): Promise<Data.User | null> {
         return Promise.resolve(this.users.find((u) => u.uid == userId) ?? null);
     }
 
-    getUserByFingerprint(fingerprint: String): Promise<Db.User | null> {
+    getUserByFingerprint(fingerprint: String): Promise<Data.User | null> {
         return Promise.resolve(this.users.find((u) => u.fingerprint == fingerprint) ?? null);
     }
 
-    getRecords(count: number): Promise<Db.Record[]> {
+    getRecords(count: number): Promise<Data.Record[]> {
         return new Promise((resolve, reject) => resolve(this.records));
     }
 
-    insertRecord(record: Db.Record): Promise<void> {
+    insertRecord(record: Data.Record): Promise<void> {
         const index = this.records.findIndex((r) => record.userId == r.userId);
         if (index != -1) {
             this.records.splice(index, 1);
