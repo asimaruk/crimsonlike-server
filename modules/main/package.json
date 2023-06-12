@@ -3,9 +3,10 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "clean": "rimraf dist"
   },
   "dependencies": {
-    "server-impl": "file:../server-impl"
+    "server-impl": "*"
   }
 }

@@ -5,13 +5,14 @@
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rimraf dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "db-api": "file:../db-api"
+    "db-api": "*"
   },
   "dependencies": {
     "dotenv": "^16.1.4",

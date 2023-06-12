@@ -8,6 +8,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "entity-api": "file:../entity-api"
+    "entity-api": "*"
   }
 }

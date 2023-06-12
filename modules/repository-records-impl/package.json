@@ -5,17 +5,18 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rimraf dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "db-api": "file:../db-api",
-    "entity-api": "file:../entity-api",
-    "repository-records-api": "file:../repository-records-api"
+    "db-api": "*",
+    "entity-api": "*",
+    "repository-records-api": "*"
   },
   "dependencies": {
-    "db-impl": "file:../db-impl"
+    "db-impl": "*"
   }
 }
