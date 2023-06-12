@@ -1,4 +1,4 @@
-import { Api } from 'api';
+import { Api } from 'server-api';
 import express, { Request, Response } from 'express';
 
 export class DummyExpressServer implements Api {

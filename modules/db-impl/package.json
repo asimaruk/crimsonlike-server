@@ -2,18 +2,16 @@
   "name": "db-impl",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/main.js",
-  "types": "dist/src/main.d.ts",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/db-api": "file:../api",
-    "@types/dotenv": "^8.2.0",
-    "@types/mongodb": "^4.0.7"
+    "db-api": "file:../db-api"
   },
   "dependencies": {
     "dotenv": "^16.1.4",

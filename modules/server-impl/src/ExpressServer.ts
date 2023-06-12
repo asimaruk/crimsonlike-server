@@ -1,4 +1,4 @@
-import { Api } from 'api';
+import { Api } from 'server-api';
 import express, { Request, Response } from 'express';
 import { RepositoryRecords } from 'repository-records-api';
 
@@ -35,7 +35,7 @@ export class ExpressServer implements Api {
             score: record.score,
             uid: record.uid
         });
-        return { 
+        return {
             uid: newRecordEntity.uid,
             name: newRecordEntity.name,
             score: newRecordEntity.score,

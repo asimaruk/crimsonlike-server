@@ -1,5 +1,5 @@
 {
-  "name": "@types/repository-records-api",
+  "name": "repository-records-api",
   "version": "1.0.0",
   "description": "",
   "main": "",
@@ -8,6 +8,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/entity-api": "file:../../../entity/api"
+    "entity-api": "file:../entity-api"
   }
 }

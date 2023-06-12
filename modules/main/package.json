@@ -1,0 +1,11 @@
+{
+  "name": "main",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "server-impl": "file:../server-impl"
+  }
+}

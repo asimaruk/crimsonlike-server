@@ -1,0 +1,21 @@
+{
+  "name": "repository-records-impl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "db-api": "file:../db-api",
+    "entity-api": "file:../entity-api",
+    "repository-records-api": "file:../repository-records-api"
+  },
+  "dependencies": {
+    "db-impl": "file:../db-impl"
+  }
+}

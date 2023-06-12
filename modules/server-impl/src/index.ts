@@ -1,4 +1,4 @@
-import { Api } from "api";
+import { Api } from "server-api";
 import { ExpressServer } from "./ExpressServer";
 import { createRecordsRepository } from "repository-records-impl";
 
