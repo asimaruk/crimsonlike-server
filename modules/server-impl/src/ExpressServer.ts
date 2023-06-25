@@ -6,10 +6,12 @@ export class ExpressServer implements Api {
 
     private app = express();
     private port = 3000;
+    private allowedOrigins = ['*'];
 
     constructor(private repository: RepositoryRecords) {
         this.app.get('/records', async (req: Request, res: Response) => {
             const allRecords = await this.allRecords();
+            res.setHeader('Access-Control-Allow-Origin', this.allowedOrigins.join(','));
             res.send(allRecords);
         });
         this.app.post('/new_record', async (req: Request, res: Response) => {
