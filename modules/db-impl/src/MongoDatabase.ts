@@ -11,7 +11,7 @@ export class MongoDatabase implements Data {
 
     private client: MongoClient | null = null;
     private db: Db | null = null;
-    private collections: { 
+    private collections: {
         users?: Collection<MongoUser>,
         records?: Collection<MongoRecord>,
     } = {};
@@ -24,13 +24,12 @@ export class MongoDatabase implements Data {
     async setup(): Promise<void> {
         for (let i = 0;;i++) {
             const envPath = path.resolve(__dirname, '../'.repeat(i), '.env');
-            const config = dotenv.config({ path:  envPath, debug: true });
+            const config = dotenv.config({ path:  envPath });
             if (config.parsed) {
-                console.log(process.env);
                 break;
             }
         }
-        
+
         this.client = await MongoClient.connect(process.env.DB_CONN_STRING as string);
         this.db = this.client.db(process.env.DB_NAME);
         this.collections.users = this.db.collection(process.env.USERS_COLLECTION_NAME!);
@@ -90,8 +89,8 @@ export class MongoDatabase implements Data {
     async insertRecord(record: Data.Record): Promise<void> {
         await this.initialize;
         await this.collections.records?.updateOne(
-            { userId: record.userId }, 
-            { $set: { score: record.score}}, 
+            { userId: record.userId },
+            { $set: { score: record.score}},
             { upsert: true }
         );
     }
