@@ -7,6 +7,15 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
+    "db-impl": "*",
+    "di": "*",
+    "inversify": "^6.0.1",
+    "repository-records-impl": "*",
     "server-impl": "*"
+  },
+  "devDependencies": {
+    "db-api": "*",
+    "repository-records-api": "*",
+    "server-api": "*"
   }
 }

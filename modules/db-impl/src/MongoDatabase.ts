@@ -3,10 +3,13 @@ import { Collection, Db, MongoClient, ObjectId } from "mongodb";
 import dotenv from "dotenv";
 import { User } from "./models";
 import path from "path";
+import { injectable } from "inversify";
+import 'reflect-metadata'
 
 type MongoUser = Omit<Data.User, "uid"> & { _id: string };
 type MongoRecord = Data.Record & { _id: ObjectId };
 
+@injectable()
 export class MongoDatabase implements Data {
 
     private client: MongoClient | null = null;
@@ -20,6 +23,10 @@ export class MongoDatabase implements Data {
     private initialize: Promise<void> = new Promise((resolve) => {
         this.initializeResolve = resolve;
     });
+
+    constructor() {
+        this.setup();
+    }
 
     async setup(): Promise<void> {
         for (let i = 0;;i++) {
