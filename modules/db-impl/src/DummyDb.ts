@@ -1,5 +1,8 @@
 import { Data } from "db-api";
+import { injectable } from "inversify";
+import "reflect-metadata";
 
+@injectable()
 export class DummyDb implements Data {
 
     private users: Data.User[] = [];
@@ -10,12 +13,12 @@ export class DummyDb implements Data {
     setup(): Promise<void> {
         for (; this.lastUid < 3; this.lastUid++) {
             this.users.push({
-                fingerprint: `fingerprint_${this.lastUid}`, 
-                uid: `${this.lastUid}`, 
+                fingerprint: `fingerprint_${this.lastUid}`,
+                uid: `${this.lastUid}`,
                 name: this.names[this.lastUid % this.names.length],
             });
-            this.records.push({ 
-                userId: `${this.lastUid}`, 
+            this.records.push({
+                userId: `${this.lastUid}`,
                 score: 100 * (this.lastUid + 1),
             });
         }
@@ -62,5 +65,5 @@ export class DummyDb implements Data {
     getRecordPosition(userId: string): Promise<number> {
         return Promise.resolve(this.records.findIndex((r) => userId == r.userId));
     }
-    
+
 }

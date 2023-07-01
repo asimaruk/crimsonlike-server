@@ -17,6 +17,8 @@
     "repository-records-api": "*"
   },
   "dependencies": {
-    "db-impl": "*"
+    "di": "*",
+    "inversify": "^6.0.1",
+    "reflect-metadata": "^0.1.13"
   }
 }

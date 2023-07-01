@@ -1,7 +1,6 @@
 import { RepositoryRecords } from "repository-records-api";
 import { DefaultRecordsRepository } from "./RecordsRepository";
-import { createDb } from "db-impl";
+import { TYPES, container } from 'di';
 
-export function createRecordsRepository(): RepositoryRecords {
-    return new DefaultRecordsRepository(createDb());
-}
+TYPES.RepositoryRecords = Symbol.for('RepositoryRecords');
+container.bind<RepositoryRecords>(TYPES.RepositoryRecords).to(DefaultRecordsRepository);

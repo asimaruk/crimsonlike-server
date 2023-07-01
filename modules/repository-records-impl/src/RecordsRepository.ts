@@ -1,14 +1,18 @@
 import { Data } from "db-api";
 import { Entity } from "entity-api";
+import { inject, injectable } from "inversify";
 import { RepositoryRecords } from "repository-records-api";
+import "reflect-metadata";
+import { TYPES } from "di";
 
+@injectable()
 export class DefaultRecordsRepository implements RepositoryRecords {
 
     static DEFAULT_RECORDS_COUNT = 10;
 
-    constructor(private db: Data) {
-
-    }
+    constructor(
+        @inject(TYPES.Data) private db: Data
+    ) {}
 
     async allRecords(): Promise<Entity.Record[]> {
         const records = await this.db.getRecords(DefaultRecordsRepository.DEFAULT_RECORDS_COUNT);

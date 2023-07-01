@@ -1,8 +1,6 @@
 import { Api } from "server-api";
 import { ExpressServer } from "./ExpressServer";
-import { createRecordsRepository } from "repository-records-impl";
+import { TYPES, container } from 'di';
 
-export function createApi(): Api {
-    // return new DummyExpressServer();
-    return new ExpressServer(createRecordsRepository());
-}
+TYPES.Api = Symbol.for('Api');
+container.bind<Api>(TYPES.Api).to(ExpressServer);
