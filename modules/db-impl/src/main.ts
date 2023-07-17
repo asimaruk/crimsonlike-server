@@ -1,8 +1,6 @@
 import { Data } from "db-api";
 import { MongoDatabase } from "./MongoDatabase";
+import { container, TYPES } from 'di';
 
-export function createDb(): Data {
-    const db = new MongoDatabase();
-    db.setup();
-    return db;
-}
+TYPES.Data = Symbol.for('Data');
+container.bind<Data>(TYPES.Data).to(MongoDatabase);

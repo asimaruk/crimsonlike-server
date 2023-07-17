@@ -1,14 +1,20 @@
 import { Api } from 'server-api';
 import express, { Request, Response } from 'express';
 import { RepositoryRecords } from 'repository-records-api';
+import { inject, injectable } from 'inversify';
+import "reflect-metadata";
+import { TYPES } from 'di';
 
+@injectable()
 export class ExpressServer implements Api {
 
     private app = express();
     private port = 3000;
     private allowedOrigins = ['*'];
 
-    constructor(private repository: RepositoryRecords) {
+    constructor(
+        @inject(TYPES.RepositoryRecords) private repository: RepositoryRecords
+    ) {
         this.app.get('/records', async (req: Request, res: Response) => {
             const allRecords = await this.allRecords();
             res.setHeader('Access-Control-Allow-Origin', this.allowedOrigins.join(','));
