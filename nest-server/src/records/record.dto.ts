@@ -1,4 +1,9 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateRecordDto } from './create-record.dto';
+
+export class CreateRecordDto {
+    readonly uid: string;
+    readonly name: string;
+    readonly score: number;
+}
 
 export class UpdateRecordDto extends PartialType(CreateRecordDto) {}

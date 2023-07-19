@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { RecordsService } from './records.service';
 import { RecordsController } from './records.controller';
-import { DatabaseModule } from 'src/database/database.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Record, RecordSchema } from './record.schema';
 
 @Module({
-    imports: [DatabaseModule],
+    imports: [MongooseModule.forFeature([{ name: Record.name, schema: RecordSchema }])],
     controllers: [RecordsController],
     providers: [RecordsService]
 })

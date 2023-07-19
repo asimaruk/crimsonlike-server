@@ -8,8 +8,7 @@ import {
     Delete
 } from '@nestjs/common';
 import { RecordsService } from './records.service';
-import { CreateRecordDto } from './dto/create-record.dto';
-import { UpdateRecordDto } from './dto/update-record.dto';
+import { CreateRecordDto, UpdateRecordDto } from './record.dto';
 
 @Controller('records')
 export class RecordsController {
@@ -25,18 +24,18 @@ export class RecordsController {
         return this.recordsService.findAll();
     }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
+    @Get(':uid')
+    findOne(@Param('uid') id: string) {
         return this.recordsService.findOne(+id);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateRecordDto: UpdateRecordDto) {
+    @Patch(':uid')
+    update(@Param('uid') id: string, @Body() updateRecordDto: UpdateRecordDto) {
         return this.recordsService.update(+id, updateRecordDto);
     }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
+    @Delete(':uid')
+    remove(@Param('uid') id: string) {
         return this.recordsService.remove(+id);
     }
 }

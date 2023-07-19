@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRecordDto } from './dto/create-record.dto';
-import { UpdateRecordDto } from './dto/update-record.dto';
+import { CreateRecordDto, UpdateRecordDto } from './record.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Record } from './schemas/record.schema';
 import { Model } from 'mongoose';
+import { Record } from './record.schema';
 
 @Injectable()
 export class RecordsService {
@@ -23,7 +22,7 @@ export class RecordsService {
     }
 
     update(id: number, updateRecordDto: UpdateRecordDto) {
-        return `This action updates a #${id} record`;
+        return `This action updates a #${id} record with ${updateRecordDto}`;
     }
 
     remove(id: number) {
