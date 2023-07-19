@@ -28,11 +28,12 @@ describe('RecordsService', () => {
     ];
 
     beforeEach(async () => {
+        const modelToken = getModelToken(Record.name);
         const module = await Test.createTestingModule({
             providers: [
                 RecordsService,
                 {
-                    provide: getModelToken(Record.name),
+                    provide: modelToken,
                     useValue: {
                         new: jest.fn().mockResolvedValue(mockRecord),
                         constructor: jest.fn().mockResolvedValue(mockRecord),
@@ -46,7 +47,7 @@ describe('RecordsService', () => {
         }).compile();
 
         service = module.get<RecordsService>(RecordsService);
-        model = module.get<Model<Record>>(Record.name);
+        model = module.get<Model<Record>>(modelToken);
     });
 
     it('should be defined', () => {

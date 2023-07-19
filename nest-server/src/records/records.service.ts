@@ -8,24 +8,26 @@ import { Record } from './record.schema';
 export class RecordsService {
     constructor(@InjectModel(Record.name) private recordModel: Model<Record>) {}
 
-    create(createRecordDto: CreateRecordDto): Promise<Record> {
-        const createdRecord = new this.recordModel(createRecordDto);
-        return createdRecord.save();
+    async create(createRecordDto: CreateRecordDto): Promise<Record> {
+        const createdRecord = await this.recordModel.create(createRecordDto);
+        return createdRecord;
     }
 
     findAll(): Promise<Record[]> {
         return this.recordModel.find().exec();
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} record`;
+    findOne(id: number): Promise<Record> {
+        return this.recordModel.findOne({ _id: id }).exec();
     }
 
-    update(id: number, updateRecordDto: UpdateRecordDto) {
-        return `This action updates a #${id} record with ${updateRecordDto}`;
+    async update(id: number, updateRecordDto: UpdateRecordDto): Promise<Record> {
+        const updatedRecord = await this.recordModel.findOneAndUpdate({ _id: id }, updateRecordDto).exec();
+        return updatedRecord;
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} record`;
+    async remove(id: number): Promise<Record> {
+        const removedRecord = await this.recordModel.findByIdAndRemove({ _id: id }).exec();
+        return removedRecord;
     }
 }
