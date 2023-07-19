@@ -32,7 +32,7 @@ describe('RecordsService', () => {
             providers: [
                 RecordsService,
                 {
-                    provide: getModelToken('Record'),
+                    provide: getModelToken(Record.name),
                     useValue: {
                         new: jest.fn().mockResolvedValue(mockRecord),
                         constructor: jest.fn().mockResolvedValue(mockRecord),
@@ -46,7 +46,7 @@ describe('RecordsService', () => {
         }).compile();
 
         service = module.get<RecordsService>(RecordsService);
-        model = module.get<Model<Record>>('Record');
+        model = module.get<Model<Record>>(Record.name);
     });
 
     it('should be defined', () => {
