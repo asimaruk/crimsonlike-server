@@ -14,8 +14,10 @@
     "server-impl": "*"
   },
   "devDependencies": {
+    "auth-google-impl": "*",
     "db-api": "*",
     "repository-records-api": "*",
+    "repository-users-impl": "*",
     "server-api": "*"
   }
 }

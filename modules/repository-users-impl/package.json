@@ -1,9 +1,8 @@
 {
-  "name": "server-impl",
+  "name": "repository-users-impl",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist"
@@ -12,15 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/express": "^4.17.17",
-    "auth-api": "*",
-    "repository-records-api": "*",
-    "repository-users-api": "*",
-    "server-api": "*"
+    "db-api": "*",
+    "entity-api": "*",
+    "repository-users-api": "*"
   },
   "dependencies": {
     "di": "*",
-    "express": "^4.18.2",
     "inversify": "^6.0.1",
     "reflect-metadata": "^0.1.13"
   }

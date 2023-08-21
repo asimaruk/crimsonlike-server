@@ -13,7 +13,6 @@ export class DummyDb implements Data {
     setup(): Promise<void> {
         for (; this.lastUid < 3; this.lastUid++) {
             this.users.push({
-                fingerprint: `fingerprint_${this.lastUid}`,
                 uid: `${this.lastUid}`,
                 name: this.names[this.lastUid % this.names.length],
             });
@@ -25,11 +24,10 @@ export class DummyDb implements Data {
         return Promise.resolve();
     }
 
-    createUser(fingerprint: string, name: string): Promise<Data.User> {
+    createUser(userId: string, userName: string): Promise<Data.User> {
         const user: Data.User = {
-            uid: `${this.lastUid++}`,
-            fingerprint: fingerprint,
-            name: name
+            uid: userId,
+            name: userName
         };
         this.users.push(user);
         return Promise.resolve(user);
@@ -39,8 +37,12 @@ export class DummyDb implements Data {
         return Promise.resolve(this.users.find((u) => u.uid == userId) ?? null);
     }
 
-    getUserByFingerprint(fingerprint: String): Promise<Data.User | null> {
-        return Promise.resolve(this.users.find((u) => u.fingerprint == fingerprint) ?? null);
+    updateUser(userId: string, properties: Partial<Omit<Data.User, "uid">>): Promise<void> {
+        const updatingUser = this.users.find((u) => u.uid == userId);
+        if (updatingUser) {
+            Object.assign(updatingUser, properties);
+        }
+        return Promise.resolve();
     }
 
     getRecords(count: number): Promise<Data.Record[]> {

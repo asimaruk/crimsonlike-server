@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { User } from "./models";
 import path from "path";
 import { injectable } from "inversify";
-import 'reflect-metadata'
+import 'reflect-metadata';
 
 type MongoUser = Omit<Data.User, "uid"> & { _id: string };
 type MongoRecord = Data.Record & { _id: ObjectId };
@@ -18,7 +18,6 @@ export class MongoDatabase implements Data {
         users?: Collection<MongoUser>,
         records?: Collection<MongoRecord>,
     } = {};
-    private latestUserId: number = 0;
     private initializeResolve: (value: void | PromiseLike<void>) => void = () => {};
     private initialize: Promise<void> = new Promise((resolve) => {
         this.initializeResolve = resolve;
@@ -31,7 +30,7 @@ export class MongoDatabase implements Data {
     async setup(): Promise<void> {
         for (let i = 0;;i++) {
             const envPath = path.resolve(__dirname, '../'.repeat(i), '.env');
-            const config = dotenv.config({ path:  envPath });
+            const config = dotenv.config({ path: envPath });
             if (config.parsed) {
                 break;
             }
@@ -43,10 +42,6 @@ export class MongoDatabase implements Data {
         this.collections.records = this.db.collection(process.env.RECORDS_COLLECTION_NAME!);
         console.log(`Successfully connected to database: ${this.db.databaseName}`);
 
-        const lastUser = await this.collections.users?.findOne({}, { sort:{ $natural: -1 }});
-        this.latestUserId = Number(lastUser?._id) || 0;
-
-        this.collections.users.createIndex('fingerprint');
         this.collections.records.createIndex('userId');
         console.log('Successfully created database indeces');
         this.initializeResolve();
@@ -55,15 +50,6 @@ export class MongoDatabase implements Data {
     async getUser(userId: String): Promise<Data.User | null> {
         await this.initialize;
         const user = await this.collections.users?.findOne({ uid: userId });
-        if (!user) {
-            return null;
-        }
-        return convertMongoUser(user);
-    }
-
-    async getUserByFingerprint(fingerprint: String): Promise<Data.User | null> {
-        await this.initialize;
-        const user = await this.collections.users?.findOne({ fingerprint: fingerprint });
         if (!user) {
             return null;
         }
@@ -81,12 +67,11 @@ export class MongoDatabase implements Data {
         return records ?? [];
     }
 
-    async createUser(fingerprint: string, name: string): Promise<Data.User> {
+    async createUser(userId: string, userName: string): Promise<Data.User> {
         await this.initialize;
         const insertResult = await this.collections.users?.insertOne({
-            _id: (++this.latestUserId).toString(),
-            fingerprint: fingerprint,
-            name: name
+            _id: userId,
+            name: userName
         });
         const mongoUser = await this.collections.users?.findOne({ _id: insertResult?.insertedId });
         if (!mongoUser) throw Error("Error creating user");
@@ -109,11 +94,18 @@ export class MongoDatabase implements Data {
         return position ?? 0;
     }
 
+    async updateUser(userId: string, properties: Data.UserProperties): Promise<void> {
+        await this.initialize;
+        await this.collections.users?.updateOne(
+            { userId: userId },
+            { $set: properties }
+        )
+    }
 }
 
 function convertMongoUser(u: MongoUser): Data.User {
     const { _id: uid, ...rest } = u;
-    return new User(rest.fingerprint, uid, rest.name);
+    return new User(uid, rest.name);
 }
 
 function convertMongoRecord(r: MongoRecord) {

@@ -1,0 +1,13 @@
+{
+  "name": "repository-users-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "types": "index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "entity-api": "^1.0.0"
+  }
+}

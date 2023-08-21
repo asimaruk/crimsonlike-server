@@ -7,6 +7,10 @@ export class DummyExpressServer implements Api {
     private port = 3000;
 
     constructor() {
+        this.app.get('/login', async (req: Request, res: Response) => {
+            const loginResult = await this.login(req.body);
+            res.send(loginResult);
+        });
         this.app.get('/records', async (req: Request, res: Response) => {
             const allRecords = await this.allRecords();
             res.send(allRecords);
@@ -14,6 +18,13 @@ export class DummyExpressServer implements Api {
         this.app.post('/new_record', async (req: Request, res: Response) => {
             const newRecord = await this.newRecord(req.body);
             res.send(newRecord);
+        });
+    }
+
+    login(auth: Api.Login): Promise<Api.User> {
+        return Promise.resolve({
+            id: '1',
+            name: 'Username#1'
         });
     }
 
@@ -27,7 +38,7 @@ export class DummyExpressServer implements Api {
         });
     }
 
-    newRecord(record: Api.Record): Promise<Api.NewRecord> {
+    newRecord(record: Api.NewRecord): Promise<Api.NewRecordResult> {
         return new Promise((resolve, reject) => {
             resolve({
                 ...record,

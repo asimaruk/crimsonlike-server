@@ -8,4 +8,9 @@ export namespace Entity {
     export type NewRecord = Record & {
         position: number
     };
+
+    export type User = {
+        id: string,
+        name: string
+    };
 }
