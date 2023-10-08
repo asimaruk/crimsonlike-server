@@ -15,15 +15,16 @@ export class ExpressServer implements Api {
     private token2Id: { [key: string]: string } = {};
 
     constructor(
-        @inject(TYPES.RepositoryRecords) private repository: RepositoryRecords,
+        @inject(TYPES.RepositoryRecords) private recordsRepository: RepositoryRecords,
         @inject(TYPES.UsersRepository) private usersRepository: UsersRepository,
         @inject(TYPES.GoogleAuth) private googleAuth: AuthPlatform,
     ) {
         // TODO: add error handling for all routes
         this.app.use(express.json());
-        this.app.use((req: Request, res: Response, next: NextFunction) => {
+        this.app.use(async (req: Request, res: Response, next: NextFunction) => {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+            await this.checkLogin(req.body);
             next();
         });
         this.app.post('/login', async (req: Request, res: Response) => {
@@ -35,23 +36,12 @@ export class ExpressServer implements Api {
             res.send(allRecords);
         });
         this.app.post('/new_record', async (req: Request, res: Response) => {
-            const reqBody = req.body as Api.NewRecord;
-            if (this.token2Id[reqBody.authToken] != reqBody.uid) {
-                if (this.isLogin(reqBody)) {
-                    await this.login(reqBody);
-                }
-                if (this.token2Id[reqBody.authToken] != reqBody.uid) {
-                    // send error
-                    return;
-                }
-            }
             const newRecord = await this.newRecord(req.body);
             res.send(newRecord);
         });
-    }
-
-    private isLogin = (body: any): boolean => {
-        return 'authType' in body && 'authToken' in body;
+        this.app.post('/update_user', async (req: Request, res: Response) => {
+            await this.updateUser(req.body);
+        });
     }
 
     async login(auth: Api.Login): Promise<Api.User> {
@@ -64,8 +54,20 @@ export class ExpressServer implements Api {
         }
     }
 
+    async checkLogin(body: any): Promise<void> {
+        if ('authToken' in body && 'uid' in body) {
+            if (this.token2Id[body.authToken] != body.uid) {
+                await this.login(body);
+                if (this.token2Id[body.authToken] != body.uid) {
+                    // send error
+                    return;
+                }
+            }
+        }
+    }
+
     async allRecords(): Promise<Api.Record[]> {
-        const recordEntities = await this.repository.allRecords();
+        const recordEntities = await this.recordsRepository.allRecords();
         return recordEntities.map(recordEntity => {
             return {
                 uid: recordEntity.uid,
@@ -76,7 +78,7 @@ export class ExpressServer implements Api {
     }
 
     async newRecord(record: Api.NewRecord): Promise<Api.NewRecordResult> {
-        const newRecordEntity = await this.repository.newRecord({
+        const newRecordEntity = await this.recordsRepository.newRecord({
             name: record.name,
             score: record.score,
             uid: record.uid
@@ -87,6 +89,12 @@ export class ExpressServer implements Api {
             score: newRecordEntity.score,
             position: newRecordEntity.position
         }
+    }
+
+    async updateUser(userUpdate: Api.UserUpdate) {
+        await this.usersRepository.updateUser(userUpdate.uid, {
+            name: userUpdate.name
+        });
     }
 
     start(): void {

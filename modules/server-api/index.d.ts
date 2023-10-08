@@ -40,4 +40,8 @@ declare namespace Api {
         id: string,
         name: string,
     }
+
+    export type UserUpdate = {
+        uid: string
+    } & Partial<Omit<Api.User, 'id'>>
 }
