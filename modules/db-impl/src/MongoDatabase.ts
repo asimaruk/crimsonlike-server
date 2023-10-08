@@ -49,7 +49,7 @@ export class MongoDatabase implements Data {
 
     async getUser(userId: String): Promise<Data.User | null> {
         await this.initialize;
-        const user = await this.collections.users?.findOne({ uid: userId });
+        const user = await this.collections.users?.findOne({ _id: userId });
         if (!user) {
             return null;
         }

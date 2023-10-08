@@ -1,5 +1,5 @@
 import { Api } from 'server-api';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { RepositoryRecords } from 'repository-records-api';
 import { inject, injectable } from 'inversify';
 import "reflect-metadata";
@@ -12,7 +12,6 @@ export class ExpressServer implements Api {
 
     private app = express();
     private port = 3000;
-    private allowedOrigins = ['*'];
     private token2Id: { [key: string]: string } = {};
 
     constructor(
@@ -21,14 +20,18 @@ export class ExpressServer implements Api {
         @inject(TYPES.GoogleAuth) private googleAuth: AuthPlatform,
     ) {
         // TODO: add error handling for all routes
-        this.app.get('/login', async (req: Request, res: Response) => {
+        this.app.use(express.json());
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+            next();
+        });
+        this.app.post('/login', async (req: Request, res: Response) => {
             const loginResult = await this.login(req.body);
-            res.setHeader('Access-Control-Allow-Origin', this.allowedOrigins.join(','));
             res.send(loginResult);
         });
         this.app.get('/records', async (req: Request, res: Response) => {
             const allRecords = await this.allRecords();
-            res.setHeader('Access-Control-Allow-Origin', this.allowedOrigins.join(','));
             res.send(allRecords);
         });
         this.app.post('/new_record', async (req: Request, res: Response) => {
@@ -43,7 +46,6 @@ export class ExpressServer implements Api {
                 }
             }
             const newRecord = await this.newRecord(req.body);
-            res.setHeader('Access-Control-Allow-Origin', this.allowedOrigins.join(','));
             res.send(newRecord);
         });
     }
