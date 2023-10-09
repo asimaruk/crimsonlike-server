@@ -56,6 +56,12 @@ export class MongoDatabase implements Data {
         return convertMongoUser(user);
     }
 
+    async getRecord(userId: string): Promise<Data.Record | null> {
+        await this.initialize;
+        const record = await this.collections.records?.findOne({ userId: userId });
+        return record ? convertMongoRecord(record) : null;
+    }
+
     async getRecords(count: number): Promise<Data.Record[]> {
         await this.initialize;
         const records = await this.collections.records
@@ -71,7 +77,7 @@ export class MongoDatabase implements Data {
         await this.initialize;
         const insertResult = await this.collections.users?.insertOne({
             _id: userId,
-            name: userName
+            name: userName,
         });
         const mongoUser = await this.collections.users?.findOne({ _id: insertResult?.insertedId });
         if (!mongoUser) throw Error("Error creating user");

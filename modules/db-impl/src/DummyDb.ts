@@ -45,6 +45,10 @@ export class DummyDb implements Data {
         return Promise.resolve();
     }
 
+    getRecord(userId: string): Promise<Data.Record | null> {
+        return Promise.resolve(this.records.find((v) => v.userId == userId) || null);
+    }
+
     getRecords(count: number): Promise<Data.Record[]> {
         return new Promise((resolve, reject) => resolve(this.records));
     }

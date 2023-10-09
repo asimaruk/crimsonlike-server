@@ -2,6 +2,7 @@ export interface Data {
     setup(): Promise<void>;
     getUser(userId: string): Promise<Data.User | null>;
     getRecords(count: number): Promise<Data.Record[]>;
+    getRecord(userId: string): Promise<Data.Record | null>;
     createUser(userId: string, userName: string): Promise<Data.User>;
     insertRecord(record: Data.Record): Promise<void>;
     getRecordPosition(userId: string): Promise<number>;

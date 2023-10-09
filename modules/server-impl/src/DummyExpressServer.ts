@@ -24,7 +24,8 @@ export class DummyExpressServer implements Api {
     login(auth: Api.Login): Promise<Api.User> {
         return Promise.resolve({
             id: '1',
-            name: 'Username#1'
+            name: 'Username#1',
+            score: 0,
         });
     }
 

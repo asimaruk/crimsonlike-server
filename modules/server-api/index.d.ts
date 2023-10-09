@@ -27,18 +27,22 @@ declare namespace Api {
     export type Record = {
         uid: string,
         name: string,
-        score: number
+        score: number,
     };
 
-    export type NewRecord = Login & Record;
+    export type NewRecord = {
+        uid: string,
+        score: number,
+    };
 
-    export type NewRecordResult = Record & {
+    export type NewRecordResult = NewRecord & {
         position: number
     };
 
     export type User = {
         id: string,
         name: string,
+        score: number,
     }
 
     export type UserUpdate = {

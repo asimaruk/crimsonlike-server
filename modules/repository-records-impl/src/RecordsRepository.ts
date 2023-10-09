@@ -1,5 +1,4 @@
 import { Data } from "db-api";
-import { Entity } from "entity-api";
 import { inject, injectable } from "inversify";
 import { RepositoryRecords } from "repository-records-api";
 import "reflect-metadata";
@@ -14,22 +13,25 @@ export class DefaultRecordsRepository implements RepositoryRecords {
         @inject(TYPES.Data) private db: Data
     ) {}
 
-    async allRecords(): Promise<Entity.Record[]> {
+    async allRecords(): Promise<RepositoryRecords.Record[]> {
         const records = await this.db.getRecords(DefaultRecordsRepository.DEFAULT_RECORDS_COUNT);
-        const users = await Promise.all(records.map(async (r) => {
-            return this.db.getUser(r.userId);
-        }));
         return records.map((r) => {
-            const user = users.find((u) => u?.uid == r.userId);
             return {
-                uid: user?.uid ?? "",
-                name: user?.name ?? "unknown",
+                uid: r.userId,
                 score: r.score,
-            };
+            }
         });
     }
 
-    async newRecord(record: Entity.Record): Promise<Entity.NewRecord> {
+    async getRecord(uid: string): Promise<RepositoryRecords.Record | null> {
+        const record = await this.db.getRecord(uid);
+        return record ? {
+            uid: record.userId,
+            score: record.score,
+        } : null;
+    }
+
+    async newRecord(record: RepositoryRecords.Record): Promise<RepositoryRecords.NewRecord> {
         await this.db.insertRecord({
             userId: record.uid,
             score: record.score

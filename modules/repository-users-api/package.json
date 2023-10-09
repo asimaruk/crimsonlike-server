@@ -6,8 +6,5 @@
   "types": "index.d.ts",
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "entity-api": "^1.0.0"
-  }
+  "license": "ISC"
 }

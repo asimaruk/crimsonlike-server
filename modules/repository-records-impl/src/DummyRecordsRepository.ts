@@ -1,19 +1,25 @@
-import { Entity } from "entity-api";
 import { RepositoryRecords } from "repository-records-api";
 
 export class DummyRecordsRepository implements RepositoryRecords {
-    
-    allRecords(): Promise<Entity.Record[]> {
+
+    allRecords(): Promise<RepositoryRecords.Record[]> {
         return new Promise((resolve, reject) => {
             resolve([
-                { uid: '1', name: 'RepositoryJohn', score: 100 },
-                { uid: '2', name: 'RepositoryJane', score: 200 },
-                { uid: '3', name: 'RepositoryJack', score: 300 },
+                { uid: '1', score: 100 },
+                { uid: '2', score: 200 },
+                { uid: '3', score: 300 },
             ]);
         });
     }
 
-    newRecord(record: Entity.Record): Promise<Entity.NewRecord> {
+    getRecord(uid: string): Promise<RepositoryRecords.Record | null> {
+        return Promise.resolve({
+            uid: uid,
+            score: 100,
+        });
+    }
+
+    newRecord(record: RepositoryRecords.Record): Promise<RepositoryRecords.NewRecord> {
         return new Promise((resolve, reject) => {
             resolve({
                 ...record,

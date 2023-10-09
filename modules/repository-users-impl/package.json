@@ -12,7 +12,6 @@
   "license": "ISC",
   "devDependencies": {
     "db-api": "*",
-    "entity-api": "*",
     "repository-users-api": "*"
   },
   "dependencies": {

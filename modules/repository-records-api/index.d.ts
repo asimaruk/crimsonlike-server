@@ -1,6 +1,16 @@
-import { Entity } from "entity-api";
-
 export interface RepositoryRecords {
-    allRecords(): Promise<Entity.Record[]>;
-    newRecord(record: Entity.Record): Promise<Entity.NewRecord>;
+    allRecords(): Promise<RepositoryRecords.Record[]>;
+    getRecord(uid: string): Promise<RepositoryRecords.Record | null>;
+    newRecord(record: RepositoryRecords.Record): Promise<RepositoryRecords.NewRecord>;
+}
+
+declare namespace RepositoryRecords {
+    export type Record = {
+        uid: string,
+        score: number,
+    };
+
+    export type NewRecord = Record & {
+        position: number,
+    };
 }

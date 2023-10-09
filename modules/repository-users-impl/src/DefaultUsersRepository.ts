@@ -1,4 +1,3 @@
-import { Entity } from 'entity-api';
 import { inject, injectable } from 'inversify';
 import { UsersRepository } from 'repository-users-api'
 import { TYPES } from 'di';
@@ -11,13 +10,13 @@ export class DefaultUsersRepository implements UsersRepository {
         @inject(TYPES.Data) private db: Data
     ) {}
 
-    async getUser(id: string): Promise<Entity.User> {
+    async getUser(id: string): Promise<UsersRepository.User> {
         const existingUser = await this.db.getUser(id);
         if (existingUser) {
-            return this.toUserEntity(existingUser);
+            return this.toRepositoryUser(existingUser);
         } else {
             const createdUser = await this.db.createUser(id, `Username#${id}`);
-            return this.toUserEntity(createdUser);
+            return this.toRepositoryUser(createdUser);
         }
     }
 
@@ -26,10 +25,10 @@ export class DefaultUsersRepository implements UsersRepository {
         return Promise.resolve();
     }
 
-    private toUserEntity(dbUser: Data.User): Entity.User {
+    private toRepositoryUser(dbUser: Data.User): UsersRepository.User {
         return {
             id: dbUser.uid,
-            name: dbUser.name
+            name: dbUser.name,
         };
     }
 }

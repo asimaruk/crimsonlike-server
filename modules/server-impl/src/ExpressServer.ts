@@ -48,7 +48,15 @@ export class ExpressServer implements Api {
         if (auth.authType == 'gg') {
             const uid = await this.googleAuth.verify(auth.authToken);
             this.token2Id[auth.authToken] = uid;
-            return this.usersRepository.getUser(uid);
+            const [user, record] = await Promise.all([
+                this.usersRepository.getUser(uid),
+                this.recordsRepository.getRecord(uid),
+            ]);
+            return {
+                id: user.id,
+                name: user.name,
+                score: record?.score ?? 0,
+            };
         } else {
             throw new Error(`Unknown authorization type: ${auth.authType}`);
         }
@@ -68,10 +76,11 @@ export class ExpressServer implements Api {
 
     async allRecords(): Promise<Api.Record[]> {
         const recordEntities = await this.recordsRepository.allRecords();
-        return recordEntities.map(recordEntity => {
+        const users = await Promise.all(recordEntities.map(e => this.usersRepository.getUser(e.uid)))
+        return recordEntities.map((recordEntity, index) => {
             return {
                 uid: recordEntity.uid,
-                name: recordEntity.name,
+                name: users[index].name,
                 score: recordEntity.score
             }
         });
@@ -79,13 +88,11 @@ export class ExpressServer implements Api {
 
     async newRecord(record: Api.NewRecord): Promise<Api.NewRecordResult> {
         const newRecordEntity = await this.recordsRepository.newRecord({
-            name: record.name,
+            uid: record.uid,
             score: record.score,
-            uid: record.uid
         });
         return {
             uid: newRecordEntity.uid,
-            name: newRecordEntity.name,
             score: newRecordEntity.score,
             position: newRecordEntity.position
         }
